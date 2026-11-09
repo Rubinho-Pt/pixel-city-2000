@@ -1,72 +1,86 @@
 # Pixel City 2000 · Alpha 0.1
 
-Jogo web social isométrico com identidade e desenho originais. MVP local, sem dependências externas nem cobranças reais. Requer **Node.js 22 ou superior**.
+An original retro isometric social web game inspired by early-2000s virtual hangouts: a playable room, controllable avatars, an NPC, chat, cosmetics and moderation tools.
 
-![Sala Frequência, avatar e loja de cosméticos](docs/preview.png)
+**Local development prototype. No real-money payments. Requires Node.js 22 or later.** The game interface is currently in Portuguese; this documentation is in English.
 
-## O que é este projeto?
+![The Frequency room, avatar and cosmetics shop](docs/preview.png)
 
-Pixel City 2000 recupera a sensação dos pontos de encontro virtuais dos anos 2000 com uma identidade própria: uma praça isométrica, cores suaves, máquinas arcade, personagens em pixels e conversa entre jogadores. Esta primeira versão permite explorar a sala, conhecer a anfitriã Lia, receber um presente de boas-vindas e personalizar o avatar com moedas fictícias.
+## About the project
 
-O objetivo é evoluir para um mundo social online sustentável, onde os cosméticos ajudam a financiar o desenvolvimento sem oferecer vantagens competitivas. Este repositório entrega uma base executável: interface, servidor autoritativo, contas locais, persistência, moderação e testes. A abertura ao público e os pagamentos são etapas futuras, sujeitas à infraestrutura e validações descritas abaixo.
+Pixel City 2000 is a small virtual place to meet, explore and express yourself. Its original design combines a soft retro palette, arcade cabinets, pixel characters and an isometric perspective. Meet Lia, collect a welcome gift and customize your avatar using fictional coins.
 
-## Jogar
+The long-term goal is a sustainable social world supported by optional cosmetics without competitive advantages. This repository delivers the first executable foundation: browser interface, authoritative server, local accounts, persistence, moderation and integration tests. Public hosting and payments remain future work requiring the infrastructure and validation described below.
 
-Na pasta do projeto, executar:
+## Quick start
+
+Download or clone this repository, open its folder in a terminal and run:
 
 ```sh
 npm start
 ```
 
-Abrir **http://localhost:3000**. Também podes usar `node server.mjs`. Em Windows, `JOGAR.cmd` inicia o servidor e abre o navegador.
+Open **http://localhost:3000**. No dependency installation is required. You can also run `node server.mjs`. On Windows, double-click `JOGAR.cmd` to start the server and open your browser. Keep the server window open while playing.
 
-- Andar: WASD, setas, botões no telemóvel ou clique num quadrado do chão. Os móveis bloqueiam a passagem.
-- Aproxima-te da Lia e carrega em **Falar com a Lia**: recebes 100 moedas uma única vez.
-- Começas com 500 moedas fictícias. Compra e equipa casacos ou uma coroa.
-- Sem conta, tudo é demonstração temporária no navegador; recarregar repõe o estado.
-- Cria uma conta com nome e palavra-passe de pelo menos 12 caracteres para guardar o progresso. Não uses uma palavra-passe de outro serviço neste protótipo.
-- Para experimentar duas pessoas, usa dois perfis de navegador e duas contas. O servidor partilha a sala e o chat, atualizados a cada 1,5 segundos. Não há utilizadores simulados apresentados como pessoas reais.
-- O servidor escuta apenas na máquina local por predefinição. Não está publicado na Internet.
+- Move using WASD, arrow keys, mobile direction buttons or a click on the floor. Furniture blocks movement.
+- Walk close to Lia and click **Falar com a Lia** for a one-time gift of 100 coins.
+- Start with 500 fictional coins. Buy and equip jackets or a crown.
+- Without an account, the demo is temporary; reloading resets it.
+- Create an account with a name and a password of at least 12 characters to save progress. Do not reuse a password from another service for this prototype.
+- To try two players, use separate browser profiles and two accounts on the same server. State and chat update every 1.5 seconds. Simulated users are not presented as real people.
+- The server listens locally by default. Publishing source on GitHub does not host the running game.
 
-## Administração e moderação
+## Administration and moderation
 
-1. Cria a tua conta pelo jogo.
-2. Para o servidor com Ctrl+C.
-3. Executa `node admin.mjs "Nome da conta"`.
-4. Reinicia o servidor e entra na conta. Em **A minha conta**, abre **Painel administrativo**.
+1. Create your account through the game.
+2. Stop the server with Ctrl+C.
+3. Run `node admin.mjs "Your account name"`.
+4. Restart, sign in, open **A minha conta**, then **Painel administrativo**.
 
-A promoção exige acesso ao computador/ficheiros; não existe palavra-passe administrativa incluída no código nem promoção por pedido do navegador. Não executar a ferramenta enquanto o servidor estiver ativo.
+Promotion requires access to the machine and its files. There is no bundled administrator password or browser-accessible promotion endpoint. Do not run the promotion tool while the server is running.
 
-Uma mensagem de outra conta pode ser denunciada. A denúncia guarda uma cópia da mensagem e o motivo. Um administrador pode emitir aviso, mute de 30 minutos, suspensão de 24 horas ou levantar restrições. Cada medida exige justificação e fica registada. O jogador consulta medidas em **Comunidade** e envia recurso, mesmo suspenso. O administrador aceita ou rejeita com justificação. Aceitar levanta as restrições ativas da conta; esta simplificação deverá ser substituída por revogação individual de medidas na próxima versão.
+Players can report another account's chat message. Reports preserve the message and reason. Administrators can issue a warning, a 30-minute mute, a 24-hour suspension or lift restrictions. Each action requires a reason and is recorded. Players review measures under **Comunidade** and can appeal even while suspended. Administrators accept or reject appeals with a written explanation.
 
-O filtro de três termos e de links é uma demonstração limitada, não um sistema completo de deteção de abuso. Não emite banimentos automáticos. A interface não inclui ainda bloqueio pessoal, filas com atribuição de denúncias, nem banimento permanente.
+Accepting an appeal currently lifts all active restrictions on that account; future versions should revoke individual measures. The small three-term profanity filter and link filter are demonstrations, not comprehensive abuse detection. They do not automatically ban players. Personal blocking, assigned report queues and permanent bans are not implemented.
 
-## Testes
+## Tests
 
 ```sh
 npm test
 ```
 
-Testes de integração com servidor e dados isolados: criação/login, autorização administrativa, origem e CSRF, rejeição de movimento impossível, compra concorrente sem débito duplicado, persistência, denúncia, mute, suspensão, recurso, levantamento de restrições e logout.
+Integration tests use an isolated server and temporary data. They cover registration/login, administrator authorization, Origin and CSRF checks, invalid movement, concurrent purchases without duplicate charges, persistence, reports, mutes, suspensions, appeals, restoration and logout. GitHub Actions runs the same suite on Node.js 24.
 
-## Estrutura e limites
+## Architecture and limits
 
-- `public/`: interface sem bibliotecas, sala desenhada em Canvas, estilos e catálogo. O cliente envia intenções de movimento/artigo, nunca saldo ou preço autoritativos.
-- `server.mjs`: API HTTP autoritativa; valida cada passo, colisões, cadência, saldo, inventário, missão e sanções. Estado partilhado por polling, sem ligações P2P/WebRTC.
-- `data/state.json`: contas, inventário e moderação; escrita serializada e substituição por rename. Criado no primeiro arranque, excluído do controlo de versões. Um processo por ficheiro. Não é uma base transacional para produção.
-- Sessões em memória, expiração de 24 horas, cookie HttpOnly/SameSite=Strict, token CSRF e verificação de Origin. Reiniciar termina as sessões. Palavras-passe com scrypt assíncrono e salt individual; não guardadas em texto simples. Sem recuperação de conta, MFA ou verificação de email nesta versão.
-- Mensagens em memória (últimas 100); são perdidas ao reiniciar. Denúncias preservam a evidência. Os movimentos ficam guardados, mas posições de contas desconectadas não são enviadas como jogadores online.
-- Limites de tentativas de autenticação por endereço de ligação e limites por conta para chat, movimentos e denúncias. Não existe limite global de registos/armazenamento; proteger antes de exposição pública.
-- A API pública só envia os campos necessários do avatar. IPs não são enviados entre jogadores; o servidor e o futuro fornecedor de alojamento veem os endereços das ligações. Não é anonimato nem proteção absoluta.
+| Component | Responsibility |
+| --- | --- |
+| `public/` | Dependency-free interface, Canvas room, styles and catalog. Clients submit movement/item intents, never authoritative balances or prices. |
+| `server.mjs` | Authoritative HTTP API validating movement, collisions, rates, balances, inventory, rewards and sanctions. State uses polling, without P2P/WebRTC. |
+| `data/state.json` | Accounts, inventory and moderation. Created on first use and excluded from Git. Serialized writes replace the file by rename. One process per file; not a production transactional database. |
+| `admin.mjs` | Local administrator provisioning with the server stopped. |
+| `test/` | Integration tests with isolated temporary data. |
 
-## Próxima etapa: serviço público
+Sessions live in memory, expire after 24 hours and use HttpOnly/SameSite=Strict cookies, CSRF tokens and Origin validation. Restarting ends sessions. Passwords use asynchronous scrypt with individual salts, not plaintext. Recovery, MFA and email verification are not included.
 
-Antes de lançar, migrar para PostgreSQL com transações, índice único no nome normalizado, registo contabilístico e chaves de idempotência; backups testados; sessões partilhadas; tarefas de retenção/eliminação; limites globais e por sala; logs mínimos com acesso restrito; monitorização; revisão de segurança e testes de carga. O armazenamento atual é adequado a desenvolvimento local, não a múltiplas instâncias.
+The last 100 chat messages are held in memory and lost on restart; reports preserve evidence. Positions are saved, but disconnected accounts are not shown as online. Authentication attempts are limited by connection address; movement, chat, reports and appeals have per-account limits. Global account/storage quotas are not implemented and are required before public exposure.
 
-Separar autenticação, sala, carteira e moderação em módulos/serviços conforme a escala. Substituir o polling por WebSocket com origem/sessão verificadas, validação de mensagens, sequência e taxa máxima por jogador. Manter simulação e colisões no servidor; adicionar interpolação visual no cliente. Distribuir salas entre processos e usar armazenamento partilhado para sessões e sanções. Nenhum cliente deve receber IPs dos outros clientes.
+Public state exposes necessary avatar fields only. Players do not receive each other's IP addresses. The server and hosting provider still see connection addresses. This is not anonymity or an absolute security guarantee.
 
-Usar autenticação gerida via OIDC (Authorization Code + PKCE) ou manter um serviço de identidade auditado; MFA obrigatório para administradores, recuperação de conta e revogação de sessões. Manter papéis exclusivamente no servidor. HTTPS obrigatório em produção; configurar `NODE_ENV=production` para cookie Secure e `PUBLIC_ORIGIN=https://dominio` para a origem exata. `HOST` e `PORT` controlam a escuta. Não ativar acesso externo apenas alterando HOST sem configurar as restantes proteções. Atrás de proxy, definir explicitamente a política de proxies confiáveis e rate limiting no gateway; não confiar em X-Forwarded-For arbitrário.
+## Roadmap to a public service
 
-Pagamentos: `/api/checkout` devolve sempre 503. Integrar futuramente um fornecedor especializado com checkout alojado; segredos apenas no servidor, verificação de assinatura dos webhooks, validação de produto/montante/moeda, idempotência de evento e crédito transacional. Nunca creditar moedas pelo redirecionamento de sucesso do navegador. Prever reembolsos/estornos e reconciliação. Não recolher cartões no jogo. Nenhuma chave ou fornecedor está configurado neste MVP.
+Migrate to PostgreSQL with transactions, a unique normalized account-name index, a wallet ledger and idempotency keys. Add tested backups, shared sessions, retention/deletion jobs, global and per-room quotas, restricted minimal logs, monitoring, security review and load tests. Current storage is for local development, not multiple instances.
 
-Definir regras de comunidade, escalada humana, tempos de resposta, revisão de recursos e processos de proteção de menores antes da abertura. Rever requisitos aplicáveis de privacidade, idade, consumo e pagamentos com profissionais adequados. Não há garantia de segurança absoluta.
+Separate identity, rooms, wallets and moderation as scale requires. Replace polling with WebSockets with verified origins/sessions, validated message schemas, sequence checks and per-player limits. Keep simulation and collisions authoritative; add client interpolation. Distribute rooms across processes and share session/sanction storage. Never expose player IPs to other clients.
+
+Use managed OIDC authentication with Authorization Code + PKCE or an audited identity service. Add recovery, session revocation and mandatory administrator MFA. Keep roles server-controlled. HTTPS is mandatory: set `NODE_ENV=production` for Secure cookies and `PUBLIC_ORIGIN=https://your-domain` to the exact origin. `HOST` and `PORT` control the listener; `DATA_DIR` overrides storage. Do not expose the service merely by changing HOST. Configure trusted proxies and gateway rate limits explicitly; never trust arbitrary X-Forwarded-For headers.
+
+### Future payments
+
+`/api/checkout` always returns HTTP 503. No provider, keys or real charges are configured.
+
+Use a specialized provider's hosted checkout. Keep secrets server-side; verify webhook signatures, product, amount and currency; deduplicate events; and credit wallets transactionally. Never grant coins based on the browser's success redirect. Plan refunds, chargebacks and reconciliation. Do not collect card details in the game.
+
+### Community operations
+
+Define community rules, human escalation, response times, appeal review and child-safety processes before public launch. Review applicable privacy, age, consumer and payment requirements with appropriate professionals. No software can promise absolute security.

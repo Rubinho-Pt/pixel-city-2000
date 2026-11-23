@@ -1,4 +1,4 @@
-# Pixel City 2000 · Alpha 0.1
+# Pixel City 2000 · Alpha 0.2
 
 An original retro isometric social web game inspired by early-2000s virtual hangouts: a playable room, controllable avatars, an NPC, chat, cosmetics and moderation tools.
 
@@ -11,6 +11,16 @@ An original retro isometric social web game inspired by early-2000s virtual hang
 Pixel City 2000 is a small virtual place to meet, explore and express yourself. Its original design combines a soft retro palette, arcade cabinets, pixel characters and an isometric perspective. Meet Lia, collect a welcome gift and customize your avatar using fictional coins.
 
 The long-term goal is a sustainable social world supported by optional cosmetics without competitive advantages. This repository delivers the first executable foundation: browser interface, authoritative server, local accounts, persistence, moderation and integration tests. Public hosting and payments remain future work requiring the infrastructure and validation described below.
+
+## New in Alpha 0.2
+
+- **Two explorable rooms:** switch between Frequency Plaza and the Hanging Garden using the room buttons. Each has its own furniture, collisions, NPC, player presence and chat. Meet Noa in the garden; Lia's one-time welcome reward remains in the plaza.
+- **Avatar editor:** choose from six skin tones, six hair colors and three hairstyles, with a live preview. These appearance options are free. Cancel leaves your current appearance unchanged.
+- **Distinct clothing designs:** a hooded sweatshirt with drawstrings and a kangaroo pocket, a denim jacket with seams and chest pockets, a faux-fur-trimmed jacket, a varsity jacket, a star sweater, a striped sweater and a short-sleeved pixel T-shirt. The shop and avatar use the same pixel drawing definitions.
+- **Try before buying:** filter the shop by jackets, tops or accessories and preview any item on your avatar without spending coins. Purchased clothes can be equipped again from the wardrobe; the original outfit and removal of the crown remain available.
+- **Server-controlled wardrobe:** appearance choices, item ownership and room transitions are validated on the server. Neither previewing an item nor submitting a forged wardrobe request grants it. Current room, appearance and equipped outfit persist with the account. Older accounts receive defaults without losing coins or inventory; the three original clothing IDs retain ownership with upgraded designs.
+
+Demo mode remains temporary and local to each browser tab. Accounts save changes on this server. Rooms are not private: anyone with an account can join either room and see its retained chat history. Movement and chat requests include the expected room to reject stale actions during transitions.
 
 ## Quick start
 
@@ -29,6 +39,14 @@ Open **http://localhost:3000**. No dependency installation is required. You can 
 - Create an account with a name and a password of at least 12 characters to save progress. Do not reuse a password from another service for this prototype.
 - To try two players, use separate browser profiles and two accounts on the same server. State and chat update every 1.5 seconds. Simulated users are not presented as real people.
 - The server listens locally by default. Publishing source on GitHub does not host the running game.
+
+## Mobile web version
+
+The same game now adapts to phone browsers. At widths up to 760px, use the **Sala**, **Avatar**, **Loja** and **Chat** tabs to switch panels. Movement buttons support tapping or holding; releasing, changing panels or leaving the window stops repeated movement. You can also tap the room floor. Portrait and landscape layouts keep the controls separate from the room, and forms use larger text and touch targets.
+
+This is a responsive web version, not a native App Store/Google Play application. It uses the same accounts, inventory and rooms when devices connect to the same server. The local `localhost` URL works only on the computer running the server; mobile access requires a properly configured network or hosted server. No public hosting or firewall changes are included here.
+
+Verified with browser viewport checks at 320px and 390px portrait widths and 740px landscape width, including movement, NPC reward, item preview/purchase, appearance editing and chat. These checks do not replace testing on physical iOS and Android devices, particularly their on-screen keyboards and browser-specific behavior.
 
 ## Administration and moderation
 
@@ -49,7 +67,7 @@ Accepting an appeal currently lifts all active restrictions on that account; fut
 npm test
 ```
 
-Integration tests use an isolated server and temporary data. They cover registration/login, administrator authorization, Origin and CSRF checks, invalid movement, concurrent purchases without duplicate charges, persistence, reports, mutes, suspensions, appeals, restoration and logout. GitHub Actions runs the same suite on Node.js 24.
+Integration tests use an isolated server and temporary data. They cover registration/login, administrator authorization, Origin and CSRF checks, invalid movement, concurrent purchases without duplicate charges, persistence, reports, mutes, suspensions, appeals, restoration and logout. Additional tests cover room-specific presence and chat, collisions, stale actions, NPC rewards, wardrobe ownership, shared appearance, persistence and older account migration. GitHub Actions runs the same suite on Node.js 24.
 
 ## Architecture and limits
 
